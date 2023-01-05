@@ -38,7 +38,7 @@ RPMs for Fedora 36 and later are available at https://repo.rudd-o.com .
 
 ## See also:
 This package is inspired by Steve McIntyre's [fake-hwclock package for Debian.][fake-hwclock]
-and forked from Kristjan Valur's [soft-hwclock package][soft-hwclock]
+and forked from Kristján Valur Jónsson's [soft-hwclock package][soft-hwclock]
 to make it easier to install on RPM-based systems.
 
 [fake-hwclock]: https://tracker.debian.org/pkg/fake-hwclock
