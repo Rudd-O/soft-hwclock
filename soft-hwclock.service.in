@@ -11,13 +11,13 @@ Requires=local-fs.target
 After=local-fs.target
 Wants=time-sync.target
 Conflicts=shutdown.target
-Before=shutdown.target time-sync.target ntpdate.service ntpd.service
+Before=time-sync.target shutdown.target time-sync.target ntpdate.service ntpd.service chronyd.service
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/opt/soft-hwclock/soft-hwclock load
-ExecStop=/opt/soft-hwclock/soft-hwclock save
+ExecStart=@BINDIR@/soft-hwclock load
+ExecStop=@BINDIR@/soft-hwclock save
 
 [Install]
 WantedBy=multi-user.target

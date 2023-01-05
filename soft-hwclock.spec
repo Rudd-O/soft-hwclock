@@ -13,6 +13,7 @@ URL:            https://github.com/Rudd-O/%{name}
 Source0:        https://github.com/Rudd-O/%{name}/archive/{%version}.tar.gz#/%{name}-%{version}.tar.gz
 
 BuildRequires:  make
+BuildRequires:  sed
 BuildRequires:  systemd
 BuildRequires:  systemd-rpm-macros
 Requires:       bash
@@ -39,13 +40,18 @@ CentOS 7.
 %setup -q
 
 %build
-true
+make DESTDIR=$RPM_BUILD_ROOT BINDIR=%{_bindir} SHAREDSTATEDIR=%{_sharedstatedir} UNITDIR=%{_unitdir}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 # variables must be kept in sync with build
 make install DESTDIR=$RPM_BUILD_ROOT BINDIR=%{_bindir} SHAREDSTATEDIR=%{_sharedstatedir} UNITDIR=%{_unitdir}
-done
+
+%check
+if grep -r '@.*@' $RPM_BUILD_ROOT ; then
+    echo "Check failed: files with AT identifiers appeared" >&2
+    exit 1
+fi
 
 %post
 %systemd_post %{name}-tick.timer
@@ -61,13 +67,11 @@ done
 
 %files
 %attr(0755, root, root) %{_bindir}/%{name}
-%dir(0755, root, root) %{_sharedstatedir}/%{name}
-%attr(0644, root, root) %verify(owner group mode) %{_sharedstatedir}/%{name}/%{name}.data
-%attr(0644, root, root) %{_unitdir}/%{name}.service
-%attr(0644, root, root) %{_unitdir}/%{name}-tick.service
+%attr(-, root, root) %{_sharedstatedir}/%{name}
+%attr(0644, root, root) %{_unitdir}/%{name}*
 %doc README.md
 
 %changelog
-* Fri Jan 05 2023 Manuel Amador (Rudd-O) <rudd-o@rudd-o.com>
+* Fri Jan 6 2023 Manuel Amador (Rudd-O) <rudd-o@rudd-o.com>
 - Initial release
 
