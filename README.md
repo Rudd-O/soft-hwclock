@@ -28,10 +28,13 @@ far in the past when booting, prior to getting a proper timestamp from the netwo
 
 ## installation:
 
-Simply type `make install` in the source folder.  The top of the Makefile
-contains the default locations to which everything will be installed.
+From source:
 
-You can then start the services with `make start`,
+* Simply type `make install` in the source folder.  The top of the Makefile
+contains the default locations to which everything will be installed.
+* You can then start the services with `make start`.
+
+RPMs for Fedora 36 and later are available at https://repo.rudd-o.com .
 
 ## See also:
 This package is inspired by Steve McIntyre's [fake-hwclock package for Debian.][fake-hwclock]
