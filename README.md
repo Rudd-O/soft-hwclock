@@ -28,12 +28,10 @@ far in the past when booting, prior to getting a proper timestamp from the netwo
 
 ## installation:
 
-1. copy these files into an empty folder, e.g. ```myfolder```.
-2. install the services:
-```cd myfolder; chmod +x install; ./install```
-This will install it into `/opt/soft-hwclock`, and the unit files into `/etc/systemd/system`.
-3. The install script has enabled and started the service, but you can also do it manually:
-```systemctl enable soft-hwclock.service && systemctl start soft-hwclock.service```
+Simply type `make install` in the source folder.  The top of the Makefile
+contains the default locations to which everything will be installed.
+
+You can then start the services with `make start`,
 
 ## See also:
 This package is inspired by Steve McIntyre's [fake-hwclock package for Debian.][fake-hwclock]

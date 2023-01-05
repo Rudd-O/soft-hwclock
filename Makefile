@@ -8,7 +8,7 @@ PROGNAME=soft-hwclock
 CLOCKFILE=$(SHAREDSTATEDIR)/$(PROGNAME)/$(PROGNAME).data
 ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
-.PHONY: clean dist rpm srpm install
+.PHONY: clean dist rpm srpm install start
 
 all: $(PROGNAME) $(PROGNAME).service $(PROGNAME)-tick.service
 
@@ -54,3 +54,7 @@ install: all
 	install -Dm 644 "50-$(PROGNAME).preset" -t "$(DESTDIR)/$(PRESETDIR)/"
 	mkdir -p "$(DESTDIR)/$(SHAREDSTATEDIR)/$(PROGNAME)"
 	touch "$(DESTDIR)/$(SHAREDSTATEDIR)/$(PROGNAME)/$(PROGNAME)".data
+
+start:
+	systemctl start $(PROGNAME).service
+	systemctl start $(PROGNAME).timer
