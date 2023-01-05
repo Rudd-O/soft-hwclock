@@ -9,7 +9,7 @@ FTIME=$(test -f "${CLOCKFILE}" && cat "${CLOCKFILE}")
 
 # if the file time is in the future, use that
 setclock() {
-	if expr "${FTIME}" \> "${CTIME}" ; then
+	if expr "${FTIME}" \> "${CTIME}" >/dev/null ; then
 		echo "loading saved time ${FTIME} over ${CTIME}"
 		date --set="${FTIME}"
 		#date --date="${FTIME}"
@@ -22,7 +22,7 @@ setclock() {
 
 # if current time is greater than what is in the file, save it
 saveclock() {
-	if expr "${CTIME}" \> "${FTIME}" ; then
+	if expr "${CTIME}" \> "${FTIME}" >/dev/null ; then
 		echo "saving time ${CTIME} over ${FTIME}"
 		echo "${CTIME}" > "${CLOCKFILE}"
 	else

@@ -1,6 +1,8 @@
 BINDIR=/usr/local/bin
 SHAREDSTATEDIR=/usr/local/var/lib
 UNITDIR=/etc/systemd/system
+PRESETDIR=/etc/systemd/system-preset
+ENABLE=true
 DESTDIR=
 PROGNAME=soft-hwclock
 CLOCKFILE=$(SHAREDSTATEDIR)/$(PROGNAME)/$(PROGNAME).data
@@ -39,13 +41,16 @@ $(PROGNAME).service: $(PROGNAME).service.in
 $(PROGNAME)-tick.service: $(PROGNAME)-tick.service.in
 	cd $(ROOT_DIR) && \
 	cat $< | \
-	sed "s|@BINDIR@|$(BINDIR)|" | \
+	sed "s|@BINDIR@|$(BINDIR)|" \
 	> $@
 
 install: all
 	install -Dm 755 "$(PROGNAME)" -t "$(DESTDIR)/$(BINDIR)/"
 	install -Dm 644 "$(PROGNAME).service" -t "$(DESTDIR)/$(UNITDIR)/"
+	if [ "$(ENABLE)" = "true" ] ; then systemctl enable $(PROGNAME).service ; fi
 	install -Dm 644 "$(PROGNAME)-tick.timer" -t "$(DESTDIR)/$(UNITDIR)/"
+	if [ "$(ENABLE)" = "true" ] ; then systemctl enable $(PROGNAME)-tick.timer ; fi
 	install -Dm 644 "$(PROGNAME)-tick.service" -t "$(DESTDIR)/$(UNITDIR)/"
+	install -Dm 644 "50-$(PROGNAME).preset" -t "$(DESTDIR)/$(PRESETDIR)/"
 	mkdir -p "$(DESTDIR)/$(SHAREDSTATEDIR)/$(PROGNAME)"
 	touch "$(DESTDIR)/$(SHAREDSTATEDIR)/$(PROGNAME)/$(PROGNAME)".data

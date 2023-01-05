@@ -40,12 +40,12 @@ CentOS 7.
 %setup -q
 
 %build
-make DESTDIR=$RPM_BUILD_ROOT BINDIR=%{_bindir} SHAREDSTATEDIR=%{_sharedstatedir} UNITDIR=%{_unitdir}
+make DESTDIR=$RPM_BUILD_ROOT BINDIR=%{_bindir} SHAREDSTATEDIR=%{_sharedstatedir} UNITDIR=%{_unitdir} PRESETDIR=%{_presetdir}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 # variables must be kept in sync with build
-make install DESTDIR=$RPM_BUILD_ROOT BINDIR=%{_bindir} SHAREDSTATEDIR=%{_sharedstatedir} UNITDIR=%{_unitdir}
+make install ENABLE=false DESTDIR=$RPM_BUILD_ROOT BINDIR=%{_bindir} SHAREDSTATEDIR=%{_sharedstatedir} UNITDIR=%{_unitdir} PRESETDIR=%{_presetdir}
 
 %check
 if grep -r '@.*@' $RPM_BUILD_ROOT ; then
@@ -69,6 +69,7 @@ fi
 %attr(0755, root, root) %{_bindir}/%{name}
 %attr(-, root, root) %{_sharedstatedir}/%{name}
 %attr(0644, root, root) %{_unitdir}/%{name}*
+%attr(0644, root, root) %{_presetdir}/50-%{name}.preset
 %doc README.md
 
 %changelog
